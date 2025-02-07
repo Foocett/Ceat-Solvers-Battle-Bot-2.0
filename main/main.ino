@@ -21,7 +21,7 @@ int weaponContol; // ch3
 //int ch5Value; // L/R Inverse
 //int ch6Value; // Unbound
 int mainPow; // ch7
-int safety; // ch8, weapon safety
+int weaponSafety; // ch8, weapon safety
 int orientationSwitch; // SwC (Bot Orientation)
 int ch10Value; // SwD 
 
@@ -90,21 +90,21 @@ void writeToMotors(int ch1, int ch2, int ch3) {
 void loop() {
   // Get values for each channel
   mainPow = readChannel(CH7, 0, 255, 0); //Sw1 (Main On/Off)
-  safety = readChannel(CH8, 0, 255, 0); //Sw2 (Weapon On/Off)
+  weaponSafety = readChannel(CH8, 0, 255, 0); //Sw2 (Weapon On/Off)
   orientationSwitch = readChannel(CH9, 0, 255, 0); //Sw3 (Orientation)
   ch10Value = readChannel(CH10, 0, 255, 0); //Sw4 (Not quite sure ab this one yet, weapon direction maybe?)
   int ch9Normalized = normalize(orientationSwitch);
 
   // Print switch values
   Serial.print(mainPow); Serial.print(" ");
-  Serial.print(safety); Serial.print(" ");
+  Serial.print(weaponSafety); Serial.print(" ");
   Serial.print(ch9Normalized); Serial.print(" ");
   Serial.print(ch10Value); Serial.print(" ");
 
   if(mainPow) { // Only while main power is on
     leftRightValue = readChannel(CH1, -255, 255, 0); // Left/Right
     upDownValue = readChannel(CH2, -255, 255, 0); // Forward/Backward
-    if(safety > 10) { //Only read motor if motor power is on
+    if(weaponSafety > 10) { //Only read motor if motor power is on
       weaponContol = readChannel(CH3, 0, 255, 0); // Weapon Magnatude
     } else { //"comment that" - some nerd
       weaponContol = 0;
