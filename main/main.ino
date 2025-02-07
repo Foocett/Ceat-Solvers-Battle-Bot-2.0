@@ -79,11 +79,11 @@ void setup() {
   pinMode(CH10, INPUT); // Set Channel 10 to input
 }
 
-void writeToMotors(int ch1, int ch2, int ch3) {
+void writeToMotors(int leftRight, int upDown, int weaponSpeed) {
   /*
   We don't have drive motors rn so yeah
   */
-  int speed = map(weaponContol, 0, 255, 0, 180);
+  int speed = map(weaponSpeed, 0, 255, 0, 180);
   ESC.write(speed);
 }
 
@@ -101,7 +101,7 @@ void loop() {
   Serial.print(ch9Normalized); Serial.print(" ");
   Serial.print(ch10Value); Serial.print(" ");
 
-  if(mainPow) { // Only while main power is on
+  if(mainPow < 100) { // Only while main power is on
     leftRightValue = readChannel(CH1, -255, 255, 0); // Left/Right
     upDownValue = readChannel(CH2, -255, 255, 0); // Forward/Backward
     if(weaponSafety > 10) { //Only read motor if motor power is on
@@ -123,7 +123,7 @@ void loop() {
 
   // Write to motors
   writeToMotors(leftRightValue, upDownValue, weaponContol);
-  `
+
   // Add a delay to allow for smooth plotting
   delay(20);
 }
