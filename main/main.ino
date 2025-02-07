@@ -14,15 +14,15 @@ Servo ESC;
 #define CH10 3 // Use digital pin for Channel 10
 
 // Integers to represent values from sticks and pots
-int ch1Value; //Left/Right Value
-int ch2Value; // UP/Down Value
-int ch3Value; //Weapon Control
-//int ch4Value; // Weapon L/R
+int leftRightValue; // ch1
+int upDownValue; // ch2
+int weaponContol; // ch3
+//int ch4Value; // ch4
 //int ch5Value; // L/R Inverse
 //int ch6Value; // Unbound
-int ch7Value; // SwA Main On/Off
-int ch8Value; // SwB Weapon Saftey
-int ch9Value; // SwC (Bot Orientation)
+int mainPow; // ch7
+int saftey; // ch8, weapon safety
+int orientationSwitch; // SwC (Bot Orientation)
 int ch10Value; // SwD 
 
 // Read the number of a specified channel and convert to the range provided.
@@ -83,46 +83,46 @@ void writeToMotors(int ch1, int ch2, int ch3) {
   /*
   We don't have drive motors rn so yeah
   */
-  int speed = map(ch3Value, 0, 255, 0, 180);
+  int speed = map(weaponContol, 0, 255, 0, 180);
   ESC.write(speed);
 }
 
 void loop() {
   // Get values for each channel
-  ch7Value = readChannel(CH7, 0, 255, 0); //Sw1 (Main On/Off)
-  ch8Value = readChannel(CH8, 0, 255, 0); //Sw2 (Weapon On/Off)
-  ch9Value = readChannel(CH9, 0, 255, 0); //Sw3 (Orientation)
+  mainPow = readChannel(CH7, 0, 255, 0); //Sw1 (Main On/Off)
+  safety = readChannel(CH8, 0, 255, 0); //Sw2 (Weapon On/Off)
+  orientationSwitch = readChannel(CH9, 0, 255, 0); //Sw3 (Orientation)
   ch10Value = readChannel(CH10, 0, 255, 0); //Sw4 (Not quite sure ab this one yet, weapon direction maybe?)
-  int ch9Normalized = normalize(ch9Value);
+  int ch9Normalized = normalize(orientationSwitch);
 
   // Print switch values
-  Serial.print(ch7Value); Serial.print(" ");
-  Serial.print(ch8Value); Serial.print(" ");
+  Serial.print(mainPow); Serial.print(" ");
+  Serial.print(safety); Serial.print(" ");
   Serial.print(ch9Normalized); Serial.print(" ");
   Serial.print(ch10Value); Serial.print(" ");
 
-  if(ch7Value < 100) { // Only while main power is on
-    ch1Value = readChannel(CH1, -255, 255, 0); // Left/Right
-    ch2Value = readChannel(CH2, -255, 255, 0); // Forward/Backward
-    if(ch8Value > 10) { //Only read motor if motor power is on
-      ch3Value = readChannel(CH3, 0, 255, 0); // Weapon Magnatude
+  if(mainPow) { // Only while main power is on
+    leftRightValue = readChannel(CH1, -255, 255, 0); // Left/Right
+    upDownValue = readChannel(CH2, -255, 255, 0); // Forward/Backward
+    if(safety > 10) { //Only read motor if motor power is on
+      weaponContol = readChannel(CH3, 0, 255, 0); // Weapon Magnatude
     } else { //"comment that" - some nerd
-      ch3Value = 0;
+      weaponContol = 0;
     }
   } else { //Set joysticks to 0 if power is off
-    ch1Value = 0; // Left/Right
-    ch2Value = 0; // Forward/Backward
-    ch3Value = 0; // Weapon Magnatude
+    leftRightValue = 0; // Left/Right
+    upDownValue = 0; // Forward/Backward
+    weaponContol = 0; // Weapon Magnatude
   }
   
-  ch1Value = adjustForOrientation(ch1Value, ch9Normalized); // Adjust L/R for orientation
+  leftRightValue = adjustForOrientation(leftRightValue , ch9Normalized); // Adjust L/R for orientation
   // Print out joystick values
-  Serial.print(ch1Value); Serial.print(" "); 
-  Serial.print(ch2Value); Serial.print(" ");
-  Serial.println(ch3Value);
+  Serial.print(leftRightValue); Serial.print(" "); 
+  Serial.print(upDownValue); Serial.print(" ");
+  Serial.println(weaponContol);
 
   // Write to motors
-  writeToMotors(ch1Value, ch2Value, ch3Value);
+  writeToMotors(leftRightValue, upDownValue, weaponContol);
   `
   // Add a delay to allow for smooth plotting
   delay(20);
