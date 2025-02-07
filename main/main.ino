@@ -63,9 +63,9 @@ int normalize(int value) { // Used to normalize SW3 to a three-phase output only
 
 void setup() {
   // Set up serial communication
-  Serial.begin(9600);
+  Serial.begin(9600); // Begin serial communication for debugging/visualization
 
-  ESC.attach(4, 1000, 2000);
+  ESC.attach(4, 1000, 2000); // Attach ESC to digital 4
   // Set all pins as inputs
   pinMode(CH1, INPUT);
   pinMode(CH2, INPUT);
@@ -75,8 +75,8 @@ void setup() {
   //pinMode(CH6, INPUT);
   pinMode(CH7, INPUT);
   pinMode(CH8, INPUT);
-  pinMode(CH9, INPUT);  // Set Channel 9 to input
-  pinMode(CH10, INPUT); // Set Channel 10 to input
+  pinMode(CH9, INPUT);
+  pinMode(CH10, INPUT); 
 }
 
 void writeToMotors(int leftRight, int upDown, int weaponSpeed) {
