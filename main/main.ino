@@ -52,7 +52,7 @@ int adjustForOrientation(int inputVal, int switchVal) {
   }
 }
 
-int normalize(int value) { // Used to normalize SW2 to a three-phase output only
+int normalize(int value) { // Used to normalize SW3 to a three-phase output only
     int outval;
     if (value < 64) outval = 0;          // Values near 0 map to 0
     else if (value < 191) outval = 127;       // Values in the middle map to 127
