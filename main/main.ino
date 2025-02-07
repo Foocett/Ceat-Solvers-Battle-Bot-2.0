@@ -101,10 +101,10 @@ void loop() {
   Serial.print(ch9Normalized); Serial.print(" ");
   Serial.print(ch10Value); Serial.print(" ");
 
-  if(ch7Value < 10) { // Only while main power is on
+  if(ch7Value < 100) { // Only while main power is on
     ch1Value = readChannel(CH1, -255, 255, 0); // Left/Right
     ch2Value = readChannel(CH2, -255, 255, 0); // Forward/Backward
-    if(ch8Value < 10) { //Only read motor if motor power is on
+    if(ch8Value > 10) { //Only read motor if motor power is on
       ch3Value = readChannel(CH3, 0, 255, 0); // Weapon Magnatude
     } else { //"comment that" - some nerd
       ch3Value = 0;
@@ -122,8 +122,8 @@ void loop() {
   Serial.println(ch3Value);
 
   // Write to motors
-  writeToMotors(ch1Value, ch2, ch3);
-  
+  writeToMotors(ch1Value, ch2Value, ch3Value);
+  `
   // Add a delay to allow for smooth plotting
   delay(20);
 }
