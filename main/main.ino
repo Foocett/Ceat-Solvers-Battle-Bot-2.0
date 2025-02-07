@@ -106,7 +106,7 @@ void loop() {
     ch2Value = readChannel(CH2, -255, 255, 0); // Forward/Backward
     if(ch8Value < 10) { //Only read motor if motor power is on
       ch3Value = readChannel(CH3, 0, 255, 0); // Weapon Magnatude
-    } else {
+    } else { //"comment that" - some nerd
       ch3Value = 0;
     }
   } else { //Set joysticks to 0 if power is off
