@@ -21,7 +21,7 @@ int weaponContol; // ch3
 //int ch5Value; // L/R Inverse
 //int ch6Value; // Unbound
 int mainPow; // ch7
-int saftey; // ch8, weapon safety
+int safety; // ch8, weapon safety
 int orientationSwitch; // SwC (Bot Orientation)
 int ch10Value; // SwD 
 
